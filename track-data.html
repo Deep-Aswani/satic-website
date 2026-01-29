@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satic - AI Data Analyst Internship</title>
+    <meta name="description" content="Apply for the AI Data Analyst Internship at Satic. Work with real datasets and AI tools.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. RESET & VARIABLES --- */
+        :root {
+            --primary-color: #2563EB;     
+            --primary-dark: #1e40af;      
+            --secondary-bg: #F8FAFC;      
+            --white: #ffffff;
+            --text-main: #1e293b;         
+            --text-muted: #64748b;        
+            --container-width: 1100px;
+            --radius-md: 12px;
+            --radius-full: 50px;
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --light-blue-bg: #EBF5FF; 
+            --yellow-highlight: #FACC15; 
+            --nav-height: 80px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { background-color: var(--white); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- 2. UTILITY CLASSES --- */
+        .container { width: 100%; max-width: var(--container-width); margin: 0 auto; padding: 0 20px; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.23);
+        }
+
+        .btn-secondary-outline {
+            background: transparent;
+            border: 1px solid #cbd5e1;
+            color: var(--text-main);
+            padding: 8px 16px;
+            font-size: 0.8rem;
+        }
+
+        .btn-secondary-outline:hover {
+            border-color: var(--primary-color);
+            color: var(--primary-color);
+            background: #eff6ff;
+        }
+
+        /* --- 3. HEADER & NAV --- */
+        header {
+            height: var(--nav-height);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 0 20px;
+        }
+
+        @media(min-width: 1024px) { header { padding: 0 40px; } }
+
+        nav { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: var(--container-width); margin: 0 auto; }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            z-index: 1002;
+        }
+        @media(min-width: 768px) { .logo { font-size: 1.8rem; } }
+
+        /* Desktop Nav */
+        .nav-right-group { display: none; align-items: center; gap: 40px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--text-main); position: relative; }
+        .nav-links a:hover { color: var(--primary-color); }
+        @media(min-width: 900px) { .nav-right-group { display: flex; } }
+
+        /* Mobile Hamburger */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            cursor: pointer;
+            z-index: 1002;
+        }
+        @media(min-width: 900px) { .hamburger { display: none; } }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--text-main);
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Mobile Menu Drawer */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            transform: translateY(-100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+        }
+
+        .mobile-menu.active { transform: translateY(0); opacity: 1; }
+        .mobile-menu a { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
+        .mobile-menu .btn-primary { width: 80%; max-width: 300px; font-size: 1.1rem; padding: 15px; }
+
+        /* --- 4. DETAILS SECTION --- */
+        .details-section { padding: 40px 0 80px 0; }
+        @media(min-width: 900px) { .details-section { padding: 80px 0; } }
+        
+        /* THE GRID: Stack on Mobile, Side-by-Side on Desktop */
+        .details-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+        }
+
+        @media(min-width: 900px) {
+            .details-grid {
+                grid-template-columns: 1fr 1.2fr;
+                gap: 50px;
+                align-items: stretch;
+            }
+        }
+
+        /* IMAGE CONTAINER */
+        .details-image-container {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            box-shadow: var(--shadow-hover);
+            background: #f1f5f9;
+            height: 300px; /* Mobile: Fixed height for visual balance */
+            width: 100%;
+        }
+
+        @media(min-width: 900px) {
+            .details-image-container {
+                height: 100%; /* Desktop: Fill full height of column */
+            }
+        }
+
+        .details-image-container img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: cover; /* Crucial: Ensures image fills box without distortion */
+        }
+
+        /* CONTENT BOX */
+        .details-content-box {
+            background-color: var(--light-blue-bg);
+            padding: 30px 25px;
+            border-radius: var(--radius-md);
+            height: auto;
+        }
+
+        @media(min-width: 900px) {
+            .details-content-box {
+                padding: 40px;
+                height: 100%; 
+            }
+        }
+
+        /* --- TITLE LOGIC (Requested Behavior) --- */
+        .details-title {
+            /* MOBILE DEFAULT: Allow wrapping */
+            font-size: 2.5rem; 
+            font-weight: 800;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            line-height: 1.2;
+            flex-wrap: wrap; /* Allows "Data Analyst" to drop to next line */
+            white-space: normal; 
+        }
+
+        /* LAPTOP/DESKTOP OVERRIDE: Force Single Line */
+        @media (min-width: 1024px) {
+            .details-title {
+                /* Use clamp to ensure it fits in one line without overflowing */
+                font-size: clamp(2rem, 3.5vw, 2.5rem); 
+                white-space: nowrap; /* Forces "AI Data Analyst" onto one line */
+                flex-wrap: nowrap;
+            }
+        }
+
+        .ai-highlight {
+            background-color: var(--yellow-highlight);
+            padding: 2px 12px;
+            margin-right: 12px;
+            border-radius: 6px;
+            color: var(--text-main);
+            white-space: nowrap; /* Keep "AI" tag solid */
+        }
+
+        .details-block { margin-bottom: 25px; }
+        .details-block h3 { font-size: 1.1rem; font-weight: 700; margin-bottom: 8px; }
+        .details-block p { color: var(--text-muted); font-size: 1rem; }
+
+        .commitment-note {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(37, 99, 235, 0.1);
+            line-height: 1.5;
+        }
+
+        .contact-note {
+            text-align: center;
+            font-weight: 700;
+            margin-top: 50px;
+            font-size: 1rem;
+            letter-spacing: -0.5px;
+            padding: 0 10px;
+        }
+        @media(min-width: 900px) { .contact-note { font-size: 1.1rem; } }
+
+        .action-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 40px;
+            flex-wrap: wrap; /* Safety for small screens */
+        }
+
+        .action-buttons .btn { min-width: 120px; }
+
+        /* --- 5. FOOTER --- */
+        footer { background: #0f172a; color: white; padding: 60px 0 40px 0; text-align: center; }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home" onclick="toggleMenu()">Home</a>
+        <a href="index.html#benefits" onclick="toggleMenu()">Why Satic?</a>
+        <a href="index.html#internships" onclick="toggleMenu()">Internships</a>
+        <button class="btn btn-primary" onclick="toggleMenu()">Join Waiting Room</button>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <span style="color:var(--primary-color); font-size:2rem; margin-right:5px;">S∀T∫C.</span>
+            </div>
+            
+            <div class="nav-right-group">
+                <div class="nav-links">
+                    <a href="index.html#home">Home</a>
+                    <a href="index.html#benefits">Why Satic?</a>
+                    <a href="index.html#internships">Internships</a>
+                </div>
+                <a href="https://chat.whatsapp.com/GwHxD0NOher2NNUW9GJvD5">
+                <button class="btn btn-primary">Join Waiting Room</button>
+                </a>
+            </div>
+
+            <div class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <section class="details-section">
+        <div class="container">
+            <div class="details-grid">
+                <div class="details-image-container">
+                    <img src="./Data Analyst working with charts and a tablet.jpeg" 
+                         alt="Data Analyst reviewing charts on a tablet">
+                </div>
+                
+                <div class="details-content-box">
+                    <h1 class="details-title"><span class="ai-highlight">AI</span> DATA ANALYST</h1>
+                    
+                    <div class="details-block">
+                        <h3>What you’ll do</h3>
+                        <p>Work with real datasets, create reports, and generate insights with AI-assisted analysis.</p>
+                    </div>
+
+                    <div class="details-block">
+                        <h3>Who can apply</h3>
+                        <p>BBA and BCA students interested in data, business insights, or analytics.</p>
+                    </div>
+
+                    <div class="details-block">
+                        <h3>How you’ll work</h3>
+                        <p>Hands-on data tasks focused on understanding patterns and decision-making.</p>
+                    </div>
+
+                    <div class="details-block">
+                        <h3>Duration</h3>
+                        <p>Flexible · Practice-based</p>
+                    </div>
+
+                    <p class="commitment-note">
+                        A ₹1/day (₹365/year) commitment fee is required to join Satic and participate in internships. There are no other fees or hidden charges.
+                    </p>
+                </div>
+            </div>
+
+            <p class="contact-note">TO APPLY, CONTACT YOUR COLLEGE PLACEMENT OFFICE OR HOD.</p>
+
+            <div class="action-buttons">
+                <a href="https://forms.gle/sbFoF2uZBDZYrXiw6" class="btn btn-primary">Apply</a>
+                <a href="index.html#internships" class="btn btn-secondary-outline">Home</a>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h2>Ready to start your career?</h2>
+            <p style="margin-bottom: 30px; opacity: 0.7;">Join 1,000+ students building real portfolios.</p>
+            <a href="index.html#internships">
+            <button class="btn btn-primary" style="background: white; color: var(--primary-color);">Get Started</button>
+            </a>
+            <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.8rem; opacity: 0.5;">
+                &copy; 2026 Satic Internships. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburgerBtn');
+            const body = document.body;
+
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+
+            if (menu.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>

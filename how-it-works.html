@@ -1,0 +1,500 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Satic - How It Works</title>
+    <meta name="description" content="Understand how Satic internships help you build a career through role clarity, skill building, and proof of work.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* --- 1. RESET & VARIABLES --- */
+        :root {
+            --primary-color: #2563EB;     
+            --primary-dark: #1e40af;      
+            --secondary-bg: #F8FAFC;      
+            --white: #ffffff;
+            --text-main: #1e293b;         
+            --text-muted: #64748b;        
+            --container-width: 1100px;
+            --radius-md: 12px;
+            --radius-full: 50px;
+            --shadow-hover: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+            --light-blue-bg: #EBF5FF; 
+            --nav-height: 80px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; }
+        html { scroll-behavior: smooth; font-size: 16px; }
+        body { background-color: var(--light-blue-bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        a { text-decoration: none; color: inherit; transition: 0.3s; }
+        ul { list-style: none; }
+
+        /* --- 2. UTILITY CLASSES --- */
+        .container { width: 100%; max-width: var(--container-width); margin: 0 auto; padding: 0 20px; }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 24px;
+            border-radius: var(--radius-full);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            white-space: nowrap;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            box-shadow: 0 4px 14px 0 rgba(37, 99, 235, 0.39);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(37, 99, 235, 0.23);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--text-main);
+            color: var(--text-main);
+        }
+        
+        .btn-outline:hover {
+            background: var(--text-main);
+            color: white;
+        }
+
+        /* --- 3. HEADER & NAV --- */
+        header {
+            height: var(--nav-height);
+            width: 100%;
+            display: flex;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 0 20px;
+        }
+
+        @media(min-width: 1024px) { header { padding: 0 40px; } }
+
+        nav { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: var(--container-width); margin: 0 auto; }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: var(--primary-color);
+            letter-spacing: -1px;
+            display: flex;
+            align-items: center;
+            z-index: 1002;
+        }
+        @media(min-width: 768px) { .logo { font-size: 1.8rem; } }
+
+        /* Desktop Nav */
+        .nav-right-group { display: none; align-items: center; gap: 40px; }
+        .nav-links { display: flex; gap: 30px; }
+        .nav-links a { font-weight: 500; font-size: 0.95rem; color: var(--text-main); position: relative; }
+        .nav-links a:hover { color: var(--primary-color); }
+        @media(min-width: 900px) { .nav-right-group { display: flex; } }
+
+        /* Mobile Hamburger */
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            width: 24px;
+            height: 18px;
+            cursor: pointer;
+            z-index: 1002;
+        }
+        @media(min-width: 900px) { .hamburger { display: none; } }
+
+        .hamburger span {
+            display: block;
+            width: 100%;
+            height: 2px;
+            background-color: var(--text-main);
+            border-radius: 2px;
+            transition: all 0.3s ease-in-out;
+        }
+
+        .hamburger.active span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .hamburger.active span:nth-child(2) { opacity: 0; }
+        .hamburger.active span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+        /* Mobile Menu Drawer */
+        .mobile-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: white;
+            z-index: 1001;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            transform: translateY(-100%);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            opacity: 0;
+        }
+
+        .mobile-menu.active { transform: translateY(0); opacity: 1; }
+        .mobile-menu a { font-size: 1.5rem; font-weight: 700; color: var(--text-main); }
+        .mobile-menu .btn-primary { width: 80%; max-width: 300px; font-size: 1.1rem; padding: 15px; }
+
+        /* --- 4. PAGE HEADER --- */
+        .page-header {
+            padding: 80px 0 60px 0;
+            text-align: center;
+        }
+
+        .page-header h1 {
+            font-size: clamp(2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--text-main);
+        }
+
+        /* SVG Circle Effect */
+        .highlight-circle {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+        }
+        
+        .highlight-circle::after {
+            content: "";
+            position: absolute;
+            width: 110%;
+            height: 110%;
+            left: -5%;
+            top: -5%;
+            border: 3px solid var(--primary-color);
+            border-radius: 50% 60% 50% 40% / 40% 50% 60% 50%;
+            z-index: -1;
+            transform: rotate(-2deg);
+        }
+
+        /* --- 5. CARDS SECTION --- */
+        .steps-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        @media(min-width: 768px) {
+            .steps-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 40px;
+            }
+        }
+
+        .step-card {
+            background: var(--white);
+            border-radius: 24px;
+            padding: 40px 30px;
+            position: relative;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .step-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .step-number {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3rem;
+            font-weight: 800;
+            color: var(--text-main);
+            opacity: 0.8;
+        }
+
+        .step-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+            height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .step-card h3 {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 15px;
+            color: var(--text-main);
+        }
+
+        .step-card p {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+            line-height: 1.7;
+        }
+
+        .step-card strong {
+            color: var(--text-main);
+            font-weight: 700;
+        }
+
+        /* --- 6. STATS STRIP --- */
+        .stats-strip {
+            background: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+            margin-bottom: 80px;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .stats-strip h2 {
+            font-size: clamp(1.5rem, 3vw, 2rem);
+            font-weight: 700;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            line-height: 1.4;
+        }
+
+        /* --- 7. COLLEGE SECTION --- */
+        .college-section {
+            padding: 0 0 100px 0;
+            text-align: center;
+        }
+
+        .college-section h2 {
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 800;
+            margin-bottom: 20px;
+        }
+
+        .college-section p {
+            font-size: clamp(1.1rem, 2vw, 1.3rem);
+            max-width: 700px;
+            margin: 0 auto 40px auto;
+            color: var(--text-main);
+            font-weight: 500;
+        }
+
+        .college-contacts {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        @media(min-width: 600px) {
+            .college-contacts {
+                flex-direction: row;
+                gap: 40px;
+            }
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: clamp(1.2rem, 3vw, 1.8rem);
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .contact-icon {
+            background: black;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .college-note {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .college-footer-text {
+            margin-top: 40px;
+            font-size: 1rem;
+            color: var(--text-main);
+            font-weight: 500;
+            border-top: 1px solid rgba(0,0,0,0.1);
+            padding-top: 30px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* --- FOOTER --- */
+        footer { background: #0f172a; color: white; padding: 60px 0 40px 0; text-align: center; }
+
+    </style>
+</head>
+<body>
+
+    <div class="mobile-menu" id="mobileMenu">
+        <a href="index.html#home" onclick="toggleMenu()">Home</a>
+        <a href="index.html#benefits" onclick="toggleMenu()">Why Satic?</a>
+        <a href="index.html#internships" onclick="toggleMenu()">Internships</a>
+        <button class="btn btn-primary" onclick="toggleMenu()">Join Waiting Room</button>
+    </div>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <span style="color:var(--primary-color); font-size:2rem; margin-right:5px;">S∀T∫C.</span>
+            </div>
+            
+            <div class="nav-right-group">
+                <div class="nav-links">
+                    <a href="index.html#home">Home</a>
+                    <a href="index.html#benefits">Why Satic?</a>
+                    <a href="index.html#internships">Internships</a>
+                </div>
+                <a href="https://chat.whatsapp.com/GwHxD0NOher2NNUW9GJvD5">
+                <button class="btn btn-primary">Join Waiting Room</button>
+                </a>
+            </div>
+
+            <div class="hamburger" id="hamburgerBtn" onclick="toggleMenu()" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h1>How <span class="highlight-circle">Internships</span> Help in a <br>Changing Job Market</h1>
+        </div>
+
+        <div class="steps-grid">
+            <div class="step-card">
+                <div class="step-number">1.</div>
+                <div class="step-icon">🧠</div> <h3>Career Role Clarity</h3>
+                <p>Internships help you understand what a job role <strong>actually looks like</strong> today — daily work, responsibilities, and expectations.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">2.</div>
+                <div class="step-icon">🏃</div>
+                <h3>Skill Gap Awareness</h3>
+                <p>Working on real tasks helps you see:<br>
+                • <strong>What</strong> skills you already have<br>
+                • <strong>What</strong> skills you need to improve<br>
+                This gives clear direction to your learning.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">3.</div>
+                <div class="step-icon">📜</div>
+                <h3>Proof of Strength</h3>
+                <p>In a world where anyone can claim skills, real work speaks louder. <strong>Projects</strong> completed during internships show what you can actually do.</p>
+            </div>
+
+            <div class="step-card">
+                <div class="step-number">4.</div>
+                <div class="step-icon">👥</div>
+                <h3>Improved Employability</h3>
+                <p>Employers prefer people who have worked on real tasks before. Internship <strong>experience</strong> helps you stand out.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="stats-strip">
+        <div class="container">
+            <h2>Research shows students with internship experience are ~12.6% more likely to get job interviews.</h2>
+            <a href="index.html#internships" class="btn btn-outline">Live Internships</a>
+        </div>
+    </div>
+
+    <section class="college-section">
+        <div class="container">
+            <h2>For Colleges</h2>
+            <p>Satic supports students through structured, practice-based AI internships focused on real work and execution.</p>
+            
+            <p style="font-size: 1.1rem; margin-bottom: 30px;">Colleges interested in registering with Satic can contact us for coordination details.</p>
+
+            <div class="college-contacts">
+                <div class="contact-item">
+                    <div class="contact-icon">📞</div>
+                    <span>+91 9033270915</span>
+                </div>
+                <div class="contact-item">
+                    <div class="contact-icon">✉️</div>
+                    <span>joinsatic@gmail.com</span>
+                </div>
+            </div>
+
+            <div class="college-note">(Only for College)</div>
+
+            <div class="college-footer-text">
+                Colleges guide students; Satic adds real work—together we prepare them for what’s ahead.<br>
+                Working with 100+ colleges across India.
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <h2>Ready to start your career?</h2>
+            <p style="margin-bottom: 30px; opacity: 0.7;">Join 1,000+ students building real portfolios.</p>
+            <a href="index.html#internships">
+            <button class="btn btn-primary" style="background: white; color: var(--primary-color);">Get Started</button>
+            </a>
+            <div style="margin-top: 50px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 20px; font-size: 0.8rem; opacity: 0.5;">
+                &copy; 2026 Satic Internships. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburgerBtn');
+            const body = document.body;
+
+            menu.classList.toggle('active');
+            hamburger.classList.toggle('active');
+
+            if (menu.classList.contains('active')) {
+                body.style.overflow = 'hidden';
+            } else {
+                body.style.overflow = 'auto';
+            }
+        }
+    </script>
+</body>
+</html>
